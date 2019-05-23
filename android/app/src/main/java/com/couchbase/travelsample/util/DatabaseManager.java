@@ -2,7 +2,6 @@ package com.couchbase.travelsample.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.couchbase.lite.BasicAuthenticator;
@@ -13,21 +12,21 @@ import com.couchbase.lite.FullTextIndexItem;
 import com.couchbase.lite.IndexBuilder;
 import com.couchbase.lite.LogFileConfiguration;
 import com.couchbase.lite.LogLevel;
+import com.couchbase.lite.MutableDocument;
 import com.couchbase.lite.Replicator;
 import com.couchbase.lite.ReplicatorChange;
 import com.couchbase.lite.ReplicatorChangeListener;
 import com.couchbase.lite.ReplicatorConfiguration;
 import com.couchbase.lite.URLEndpoint;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -57,6 +56,16 @@ public class DatabaseManager {
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("data","test");
+        MutableDocument hotelDoc = new MutableDocument("TEST_ID", data);
+        try {
+            database.save(hotelDoc);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+
     }
     public void OpenDatabaseForUser(Context context,String username) {
         File dbFile = new File(context.getFilesDir()+"/"+ username, "travel-sample.cblite2");
